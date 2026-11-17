@@ -1,0 +1,32 @@
+title: Login bem-sucedido sem MFA em aplicação de acesso remoto
+id: 370c71dc-2ee7-4d9f-86a1-6eb89bf9642d
+status: experimental
+description: |
+  Detecta login bem-sucedido com apenas um fator (senha) em aplicações de acesso remoto
+  como Citrix, VPN ou Remote Desktop. Foi exatamente o que permitiu o acesso inicial no
+  caso Change Healthcare (fevereiro de 2024): credenciais válidas em um portal Citrix sem MFA.
+references:
+  - https://www.techtarget.com/cybersecurity/news/366582824/Change-Healthcare-breached-via-Citrix-portal-with-no-MFA
+author: Escarlet Lima
+date: 2026-11-16
+tags:
+  - attack.initial-access
+  - attack.persistence
+  - attack.t1078
+  - attack.t1133
+logsource:
+  product: azure
+  service: signinlogs
+detection:
+  selection_success:
+    ResultType: 0
+    AuthenticationRequirement: singleFactorAuthentication
+  selection_app:
+    AppDisplayName|contains:
+      - Citrix
+      - VPN
+      - Remote Desktop
+  condition: all of selection_*
+falsepositives:
+  - Contas de serviço com exceção formal de MFA (devem ser inventariadas e revisadas)
+level: high

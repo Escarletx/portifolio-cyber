@@ -1,0 +1,28 @@
+title: Limpeza de logs de eventos do Windows com wevtutil
+id: c99c2ebf-be65-46ee-ace1-75ddd82d298f
+status: experimental
+description: |
+  Detecta o uso do wevtutil para apagar logs de eventos. O ransomware BlackCat executa
+  "wevtutil cl" para destruir evidências antes da criptografia.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a
+author: Escarlet Lima
+date: 2026-11-16
+tags:
+  - attack.defense-evasion
+  - attack.t1070.001
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_img:
+    - Image|endswith: '\wevtutil.exe'
+    - OriginalFileName: wevtutil.exe
+  selection_cli:
+    CommandLine|contains:
+      - ' cl '
+      - ' clear-log '
+  condition: all of selection_*
+falsepositives:
+  - Scripts de manutenção que limpam logs (raro em produção)
+level: high

@@ -1,0 +1,28 @@
+title: Serviço do PsExec instalado em servidor
+id: 91455d33-e061-4555-a7ac-5b3efcacdc21
+status: experimental
+description: |
+  Detecta a instalação do serviço PSEXESVC, criado quando o PsExec executa comandos em
+  outra máquina. Afiliados do ALPHV/BlackCat usam PsExec para movimentação lateral e para
+  distribuir o ransomware pela rede.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a
+author: Escarlet Lima
+date: 2026-11-16
+tags:
+  - attack.execution
+  - attack.lateral-movement
+  - attack.t1569.002
+  - attack.t1021.002
+logsource:
+  product: windows
+  service: system
+detection:
+  selection:
+    Provider_Name: Service Control Manager
+    EventID: 7045
+    ServiceName: PSEXESVC
+  condition: selection
+falsepositives:
+  - Uso administrativo legítimo do PsExec (confirmar com a equipe de TI)
+level: medium

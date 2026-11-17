@@ -1,0 +1,25 @@
+title: Criação da nota de resgate do ALPHV/BlackCat
+id: cd279373-0ddd-4bd7-8ab2-9aee877b4bc4
+status: experimental
+description: |
+  Detecta a criação de arquivos no padrão RECOVER-<extensão>-FILES.txt, a nota de resgate
+  deixada pelo BlackCat em cada pasta criptografada. Quando esta regra dispara, a
+  criptografia já está em andamento: é o sinal para isolar a máquina imediatamente.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a
+author: Escarlet Lima
+date: 2026-11-16
+tags:
+  - attack.impact
+  - attack.t1486
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    TargetFilename|contains: '\RECOVER-'
+    TargetFilename|endswith: '-FILES.txt'
+  condition: selection
+falsepositives:
+  - Improvável
+level: critical

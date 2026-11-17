@@ -1,0 +1,27 @@
+title: Consulta DNS ao serviço de armazenamento MEGA
+id: f63e6623-38d0-4f13-a021-820e3a29cbe9
+status: experimental
+description: |
+  Detecta consultas DNS aos domínios do MEGA, serviço de nuvem usado por afiliados do
+  ALPHV/BlackCat para exfiltrar dados antes de criptografar os sistemas.
+  No caso Change Healthcare foram roubados cerca de 4 TB antes do ransomware.
+references:
+  - https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-353a
+author: Escarlet Lima
+date: 2026-11-16
+tags:
+  - attack.exfiltration
+  - attack.t1567.002
+logsource:
+  product: windows
+  category: dns_query
+detection:
+  selection:
+    QueryName|endswith:
+      - 'mega.nz'
+      - 'mega.co.nz'
+      - 'mega.io'
+  condition: selection
+falsepositives:
+  - Uso pessoal do MEGA em estações de trabalho (bloquear por política se não for aprovado)
+level: medium
